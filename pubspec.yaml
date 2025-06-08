@@ -1,0 +1,71 @@
+name: doan_qlsv_nhom10
+description: "A new Flutter project."
+publish_to: 'none' 
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.12
+  rive: ^0.13.12
+  
+  # Networking
+  http: ^1.2.1
+  dio: ^5.4.2
+  retrofit: ^4.2.0
+  
+  # State management
+  provider: ^6.1.2
+  flutter_bloc: ^8.1.4
+  
+  # Data handling
+  json_annotation: ^4.8.1
+  shared_preferences: ^2.2.3
+  
+  # Date formatting
+  intl: ^0.19.0
+  
+  # Environment variables
+  flutter_dotenv: ^5.1.0
+  
+  # Connectivity
+  connectivity_plus: ^5.0.2
+  
+  # Token management
+  jwt_decoder: ^2.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  
+  # Code generation
+  build_runner: ^2.4.8
+  retrofit_generator: ^8.1.0
+  json_serializable: ^6.7.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/Backgrounds/
+    - assets/icons/
+    - assets/RiveAssets/
+    - assets/images/
+
+  fonts:
+    - family: Intel
+      fonts:
+        - asset: assets/Fonts/Inter-Regular.ttf
+        - asset: assets/Fonts/Inter-SemiBold.ttf
+          weight: 600
+    - family: Poppins
+      fonts:
+        - asset: assets/Fonts/Poppins-Bold.ttf
+          weight: 700
