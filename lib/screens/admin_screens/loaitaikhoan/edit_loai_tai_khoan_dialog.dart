@@ -14,11 +14,14 @@ class EditLoaiTaiKhoanDialog {
     required VoidCallback onSuccess,
     required Function(bool) setLoading,
   }) async {
-    // Kiểm tra nếu loại tài khoản là TEMP thì không cho phép sửa
-    if (loaiTaiKhoan.tenLoai.trim().toUpperCase() == 'TEMP') {
+    final String tenLoaiUpper = loaiTaiKhoan.tenLoai.trim().toUpperCase();
+
+    // Kiểm tra nếu loại tài khoản là TEMP hoặc ADMINISTRATOR thì không cho phép sửa
+    if (tenLoaiUpper == 'TEMP' || tenLoaiUpper == 'ADMINISTRATOR') {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Không thể chỉnh sửa loại tài khoản TEMP'),
+        SnackBar(
+          content: Text(
+              'Không thể chỉnh sửa loại tài khoản ${loaiTaiKhoan.tenLoai}'),
           backgroundColor: Colors.red,
         ),
       );
@@ -94,11 +97,13 @@ class EditLoaiTaiKhoanDialog {
                   return;
                 }
 
-                // Kiểm tra không được đổi thành tên TEMP
-                if (tenLoai.toUpperCase() == 'TEMP') {
+                // Kiểm tra không được đổi thành tên TEMP hoặc ADMINISTRATOR
+                final tenLoaiUpper = tenLoai.toUpperCase();
+                if (tenLoaiUpper == 'TEMP' || tenLoaiUpper == 'ADMINISTRATOR') {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Không thể đặt tên loại tài khoản là TEMP'),
+                    SnackBar(
+                      content:
+                          Text('Không thể đặt tên loại tài khoản là $tenLoai'),
                       backgroundColor: Colors.red,
                     ),
                   );
@@ -144,7 +149,8 @@ class EditLoaiTaiKhoanDialog {
                       loaiTaiKhoan.maLoai, updatedLoaiTaiKhoan);
 
                   // Cập nhật chức vụ nhân viên tương tự logic trong delete
-                  await _updateEmployeePositionsOfAccounts(loaiTaiKhoan.maLoai, tenLoai);
+                  await _updateEmployeePositionsOfAccounts(
+                      loaiTaiKhoan.maLoai, tenLoai);
 
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -176,7 +182,8 @@ class EditLoaiTaiKhoanDialog {
   }
 
   // Hàm kiểm tra tên loại có trùng không
-  static bool _isNameDuplicate(String tenLoai, List<LoaiTaiKhoan> currentLoaiTaiKhoans,
+  static bool _isNameDuplicate(
+      String tenLoai, List<LoaiTaiKhoan> currentLoaiTaiKhoans,
       {String? excludeMaLoai}) {
     final normalizedName = tenLoai.trim().toLowerCase();
     return currentLoaiTaiKhoans.any((loai) =>

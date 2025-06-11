@@ -5,7 +5,7 @@ import 'package:doan_qlsv_nhom10/class/nhanvien.dart';
 import 'package:doan_qlsv_nhom10/services/api_loai_tai_khoan.dart';
 import 'package:doan_qlsv_nhom10/services/api_tai_khoan.dart';
 import 'package:doan_qlsv_nhom10/services/api_nhanvien.dart';
-// đã sửa
+
 class DeleteLoaiTaiKhoanDialog {
   static void show({
     required BuildContext context,
@@ -14,6 +14,16 @@ class DeleteLoaiTaiKhoanDialog {
     required Function(bool) setLoading,
   }) {
     if (!_canDeleteLoaiTaiKhoan(loaiTaiKhoan)) {
+      String reasonMessage;
+      if (loaiTaiKhoan.tenLoai.trim().toUpperCase() == "TEMP") {
+        reasonMessage = 'Đây là loại tài khoản hệ thống, không được phép xóa.';
+      } else if (loaiTaiKhoan.tenLoai.trim().toUpperCase() == "ADMINISTRATOR") {
+        reasonMessage =
+            'Đây là loại tài khoản quản trị viên, không được phép xóa.';
+      } else {
+        reasonMessage = 'Đây là loại tài khoản hệ thống, không được phép xóa.';
+      }
+
       showDialog<void>(
         context: context,
         builder: (BuildContext context) {
@@ -44,10 +54,10 @@ class DeleteLoaiTaiKhoanDialog {
                       Icon(Icons.info_outline,
                           color: Colors.orange[600], size: 20),
                       const SizedBox(width: 8),
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          'Đây là loại tài khoản hệ thống, không được phép xóa.',
-                          style: TextStyle(fontSize: 13),
+                          reasonMessage,
+                          style: const TextStyle(fontSize: 13),
                         ),
                       ),
                     ],
@@ -172,7 +182,8 @@ class DeleteLoaiTaiKhoanDialog {
   }
 
   static bool _canDeleteLoaiTaiKhoan(LoaiTaiKhoan loaiTaiKhoan) {
-    return loaiTaiKhoan.tenLoai.trim().toUpperCase() != "TEMP";
+    final tenLoai = loaiTaiKhoan.tenLoai.trim().toUpperCase();
+    return tenLoai != "TEMP" && tenLoai != "ADMINISTRATOR";
   }
 
   static Future<LoaiTaiKhoan?> _findTempLoaiTaiKhoan() async {
